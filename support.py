@@ -48,3 +48,30 @@ def log_loss_resid(estimator, predictions, y, classes, baseline = False):
         resid  = -np.log(np.clip(resid, 1e-15, 1 - 1e-15))
 
     return resid
+
+
+class descendants():
+    def __init__(self, skeleton):
+        self.skeleton = skeleton
+        self.desc = list()
+
+    def dir_desc(self, i):
+        n = self.skeleton.shape[1]
+        self.desc.extend([x for x in range(n) if (self.skeleton[i, x] == 2) and (x not in self.desc)])
+        return self.desc
+
+    def all_desc(self, i):
+        self.dir_desc(i)
+        old_len = -1
+        new_len = 0
+        while old_len < new_len:
+            old_len = new_len
+            for q in self.desc:
+                self.dir_desc(q)
+            new_len = len(self.desc)
+        return self.desc
+
+    def undir_neighb(self, i):
+        n = self.skeleton.shape[1]
+        neighbours = [x for x in range(n) if self.skeleton[i, x] == 1]
+        return neighbours
