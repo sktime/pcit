@@ -34,22 +34,48 @@ class find_dag():
         return middle_node, edge_nodes
 
     def cond_indep_test(self, X, Y, Z='empty'):
-        p_values_adj, = pred_indep(Y, X, z = Z)
+        p_values_adj, temp, temp = pred_indep(Y, X, z = Z)
         return p_values_adj
 
     def test_indep(self, p, q, i):
-        n = self.X.shape[1]
-        combinations = self.powerset(n, p, q, i)
-
-        depend = 1
-        for idx in combinations:
-            p_val = self.cond_indep_test(self.X[:, p], self.X[:, q], self.X[:, idx])
-            if p_val < self.confidence / self.number_tests:
+        if i == 0:
+            depend = 1
+            p_val, temp, temp = pred_indep(np.reshape(self.X[:, p], (-1, 1)), np.reshape(self.X[:, q], (-1, 1)))
+            if p_val > self.confidence / self.number_tests:
                 depend = 0
-                self.cond_sets[p, q] = idx
-                break
+                self.cond_sets[p, q] = ()
             self.number_tests += 1
+        else:
+            n = self.X.shape[1]
+            combinations = self.powerset(n, p, q, i)
+
+            depend = 1
+            for idx in combinations:
+                p_val = self.cond_indep_test(np.reshape(self.X[:, p],(-1,1)), np.reshape(self.X[:, q],(-1,1)),
+                                                            np.reshape(self.X[:, idx], (-1, len(idx))))
+                if p_val > self.confidence: #/ self.number_tests:
+                    depend = 0
+                    self.cond_sets[p, q] = idx
+                    break
+                self.number_tests += 1
         return depend
+
+    def pc_skeleton(self):
+        n = self.n
+        self.skeleton = np.array([[int(x > y) for x in range(n)] for y in range(n)])
+        i = 0
+        while i < n:
+            for q in range(n):
+                for p in range(n):
+                    link = self.skeleton[p, q]
+                    if link == 0:
+                        pass
+                    else:
+                        self.skeleton[p, q] = self.test_indep(p, q, i)
+            i += 1
+        self.skeleton = np.maximum(self.skeleton, self.skeleton.transpose())
+        print(self.cond_sets)
+        return self.skeleton
 
     def step1(self):
         old_skel = 0
@@ -100,22 +126,6 @@ class find_dag():
                 self.skeleton[middle_node[i], w] = 0
                 break
 
-    def pc_skeleton(self):
-        n = self.n
-        self.skeleton = np.array([[int(x > y) for x in range(n)] for y in range(n)])
-        i = 0
-        while i < n:
-            for q in range(n):
-                for p in range(n):
-                    link = self.skeleton[p, q]
-                    if link == 0:
-                        pass
-                    else:
-                        self.skeleton[p, q] = self.test_indep(p, q, i)
-            i += 1
-        self.skeleton = np.maximum(self.skeleton, self.skeleton.transpose())
-        return self.skeleton
-
     def find_v_struct(self):
         middle_node, edge_nodes = self.find_forks(self.n)
         for i in range(len(middle_node)):
@@ -129,6 +139,7 @@ class find_dag():
 
     def pc_dag(self):
         self.pc_skeleton()
+        print('finished skeleton learning')
         self.find_v_struct()
         old_skel = None
         while not np.array_equal(old_skel, self.skeleton):
@@ -163,8 +174,8 @@ class find_dag():
 
         self.skeleton = self.skeleton / 2
 
-        # G = nx.from_numpy_matrix(self.skeleton, create_using = nx.DiGraph())
-        # nx.draw_networkx(G)
-        # plt.show()
+        G = nx.from_numpy_matrix(self.skeleton, create_using = nx.DiGraph())
+        nx.draw_networkx(G)
+        plt.show()
 
         return self.skeleton

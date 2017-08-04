@@ -1,11 +1,11 @@
-from sklearn import naive_bayes, ensemble, linear_model, dummy
+from sklearn import naive_bayes, ensemble, linear_model, dummy, svm
 from mlxtend import classifier, regressor
 import numpy as np
 from sklearn.model_selection import cross_val_score
 from support import log_loss_resid
 
 class MetaEstimator():
-    def __init__(self, method = 'multiplexing', estimators = None, method_type = None,
+    def __init__(self, method = 'stacking', estimators = None, method_type = None,
                  cutoff_categorical = 10, baseline = False):
         self.method = method
         self.estimators = estimators
@@ -24,6 +24,8 @@ class MetaEstimator():
             self.estimators.append(linear_model.ElasticNetCV(random_state=1))
             self.estimators.append(ensemble.GradientBoostingRegressor(random_state=1))
             self.estimators.append(ensemble.RandomForestRegressor(random_state=1))
+            if y.shape[0] < 1000:
+                self.estimators.append(svm.SVR())
         else:
             if y.shape[0] < 50:
                 if len(np.unique(y)) == 2:
@@ -33,6 +35,8 @@ class MetaEstimator():
                     self.estimators.append(naive_bayes.MultinomialNB())
             self.estimators.append(naive_bayes.GaussianNB())
             self.estimators.append(ensemble.RandomForestClassifier(random_state=1))
+            if y.shape[0] < 1000:
+                self.estimators.append(svm.SVC(probability=True))
 
     def fit(self, x, y):
         if self.method_type is None:

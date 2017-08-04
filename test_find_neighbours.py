@@ -22,16 +22,23 @@ def random_gauss(size_mat=10, sparse=0.2, n=1000, thresh = 0.2):
 
     samples = stats.multivariate_normal.rvs(size=n, cov=cov_mat)
 
-    which_discrete = (stats.uniform.rvs(size = size_mat) < 0.3) * 1
+    which_discrete = np.random.randint(low = 6, size = size_mat)
 
     for i in range(size_mat):
-        if which_discrete[i] == 1:
+        if which_discrete[i] < 2:
             no_values = np.random.randint(4) + 1
             new_data = np.zeros(n)
             for j in range(no_values):
                 quantile = np.percentile(samples[:,i],100 * (j + 1) / (no_values + 1))
                 new_data = new_data + (samples[:,i] > quantile)
             samples[:, i] = new_data
+        elif which_discrete[i] == 2:
+            samples[:, i] = np.exp(samples[:, i])
+        elif which_discrete[i] == 3:
+            samples[:, i] = np.sin(samples[:, i])
+        elif which_discrete[i] == 4:
+            samples[:, i] = np.log(samples[:, i] - np.min(samples[:,i]) + 1)
+
 
     return mat, samples
 
