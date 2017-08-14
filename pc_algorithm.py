@@ -8,7 +8,6 @@ from compare import pred_indep
 
 class find_dag():
     def __init__(self, X, confidence=0.05, whichseed=1):
-        self.number_tests = 1
         self.confidence = confidence
         self.cond_sets = dict()
         self.X = X
@@ -41,10 +40,9 @@ class find_dag():
         if i == 0:
             depend = 1
             p_val, temp, temp = pred_indep(np.reshape(self.X[:, p], (-1, 1)), np.reshape(self.X[:, q], (-1, 1)))
-            if p_val > self.confidence / self.number_tests:
+            if p_val > self.confidence:
                 depend = 0
                 self.cond_sets[p, q] = ()
-            self.number_tests += 1
         else:
             n = self.X.shape[1]
             combinations = self.powerset(n, p, q, i)

@@ -17,14 +17,22 @@ def find_neighbours(X, estimators = None, confidence = 0.05, feature_names = Non
                                                     confidence= confidence, estimators = estimators, method = method)
             skeleton[j,i] = np.min(p_values_adj)
             skeleton[i,j] = skeleton[j,i]
-
     skeleton_adj = (FDRcontrol(skeleton, confidence)[0] < confidence) * 1
-    G = nx.from_numpy_matrix(skeleton_adj)
-    if feature_names is not None:
-        labels = {}
-        for i in range(len(feature_names)):
-            labels.update({i: feature_names[i]})
-        nx.relabel_nodes(G, labels, copy=False)
-    nx.draw_networkx(G)
+
 
     return skeleton, skeleton_adj
+
+def mutual_independence(X, Z = None, estimators = None, method = None, confidence = 0.05):
+    p = X.shape[1]
+
+    p_values = np.ones(p)
+    for i in range(p):
+        p_values_adj, which_predictable, independent, ci = pred_indep(X[:,i:(i+1)],
+                                np.delete(X,i,1), z=Z, confidence=confidence, estimators=estimators, method=method)
+        p_values[i] = independent[1]
+
+    p_values_adj = FDRcontrol(p_values)[0]
+
+    independent = (all(p_values_adj > confidence), np.min(p_values_adj))
+
+    return p_values_adj, independent

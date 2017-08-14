@@ -5,7 +5,7 @@ from sklearn import metrics
 import time
 import matplotlib.pyplot as plt
 
-def random_gauss(size_mat=10, sparse=0.2, n=1000, thresh = 0.2):
+def random_gauss(size_mat=10, sparse=0.2, n=1000, thresh = 0.1):
     mat = np.reshape(np.zeros(size_mat ** 2), (size_mat, size_mat))
     for i in range(size_mat):
         mat[i, i] = 1
@@ -22,27 +22,9 @@ def random_gauss(size_mat=10, sparse=0.2, n=1000, thresh = 0.2):
 
     samples = stats.multivariate_normal.rvs(size=n, cov=cov_mat)
 
-    which_discrete = np.random.randint(low = 6, size = size_mat)
-
-    for i in range(size_mat):
-        if which_discrete[i] < 2:
-            no_values = np.random.randint(4) + 1
-            new_data = np.zeros(n)
-            for j in range(no_values):
-                quantile = np.percentile(samples[:,i],100 * (j + 1) / (no_values + 1))
-                new_data = new_data + (samples[:,i] > quantile)
-            samples[:, i] = new_data
-        elif which_discrete[i] == 2:
-            samples[:, i] = np.exp(samples[:, i])
-        elif which_discrete[i] == 3:
-            samples[:, i] = np.sin(samples[:, i])
-        elif which_discrete[i] == 4:
-            samples[:, i] = np.log(samples[:, i] - np.min(samples[:,i]) + 1)
-
-
     return mat, samples
 
-n_list = np.round(np.exp(list(np.arange(7,10,0.1)))).astype(int)
+n_list = np.round(np.exp(list(np.arange(6,10,0.1)))).astype(int)
 size_mat = 10
 
 np.random.seed(0)
@@ -57,16 +39,18 @@ for n in n_list:
     time_round = 0
     for i in range(B):
         tic = time.time()
-        part_cor, X = random_gauss(size_mat = size_mat, n = n, sparse = 0.2)
+        part_cor, X = random_gauss(size_mat = size_mat, n = n, sparse = 0.20, thresh = 0.1)
 
         skeleton, skeleton_adj = find_neighbours(X, method = None, confidence=0.05)
 
         conf_mat_round = metrics.confusion_matrix(np.reshape(skeleton_adj,(-1,1)), np.reshape(part_cor > 0, (-1,1)))
         conf_mat_round[1,1] = conf_mat_round[1,1] - size_mat
+        conf_mat_round / 2
 
         time_round += time.time() - tic
 
         conf_mat += conf_mat_round
+        print(i)
 
     conf_mats[idx,:,:] = conf_mat / B
     time1[idx] = time_round / B
@@ -102,7 +86,33 @@ plt.xscale('log')
 plt.xlabel('n')
 plt.title('Power curve and FDR for increasing sample size')
 plt.legend(['Power','FDR', 'Time'])
-plt.xticks([1000, 2500 ,5000,10000,20000],[1000, 2500,5000,10000,20000])
+plt.xticks([500, 1000, 2500 ,5000,10000,20000],[500, 1000, 2500,5000,10000,20000])
 plt.show()
 
-np.save('01082017none', conf_mats)
+none = np.load('05082017none.npy')
+stack = np.load('05082017stacking.npy')
+mplx = np.load('05082017multiplexing.npy')
+
+fdr_none = smoother(none[:,1,0] / np.sum(none[:,1,:], axis = 1)) ## FDR
+pwr_none = smoother(none[:,1,1] / np.sum(none[:,:,1], axis = 1)) ## Power
+
+fdr_stack = smoother(stack[:,1,0] / np.sum(stack[:,1,:], axis = 1)) ## FDR
+pwr_stack = smoother(stack[:,1,1] / np.sum(stack[:,:,1], axis = 1)) ## Power
+
+fdr_mplx = smoother(mplx[:,1,0] / np.sum(mplx[:,1,:], axis = 1)) ## FDR
+pwr_mplx = smoother(mplx[:,1,1] / np.sum(mplx[:,:,1], axis = 1)) ## Power
+
+plt.figure(figsize=(14,7))
+plt.plot(n_list, pwr_none, color='red', lw=2)
+plt.plot(n_list, pwr_stack, color='blue', lw=2)
+plt.plot(n_list, pwr_mplx, color='green', lw=2)
+plt.plot(n_list, fdr_none, '--', color='red', lw=2)
+plt.plot(n_list, fdr_stack, '--', color='blue', lw=2)
+plt.plot(n_list, fdr_mplx, '--', color='green', lw=2)
+plt.plot((np.min(n_list), np.max(n_list)), (0.05, 0.05), '--', color = 'black')
+plt.xscale('log')
+plt.xlabel('n')
+plt.title('Power and FDR')
+plt.legend(['No Ensembling','Stacking', 'Multiplexing'])
+plt.xticks([500, 1000, 2500 ,5000,10000,20000],[500, 1000, 2500,5000,10000,20000])
+plt.show()

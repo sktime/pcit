@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import pc_algorithm
 
 ## bost, iris, data, stock, synth
-which = 'synth'
+which = 'bost'
 
 if which == 'bost':
     X = load_boston()['data']
@@ -26,12 +26,6 @@ elif which == 'iris':
     y = np.reshape(load_iris()['target'],(-1,1))
     X = np.concatenate((X,y),axis = 1)
     feature_names = ['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)', 'class']
-elif which == 'data':
-    with open('C:/Users/Sam/Dropbox/UniversityStuff/UCL/Project/Code/Project/data.csv', 'rt') as f:
-        X = np.loadtxt(f, skiprows = 1, delimiter = ",")
-elif which == 'stock':
-    with open('C:/Users/Sam/Dropbox/UniversityStuff/UCL/Project/Code/Project/dataSP.csv', 'rt') as f:
-        X = np.loadtxt(f, delimiter=";")
 elif which == 'synth':
     n = 1000
     X0 = np.reshape(stats.norm.rvs(size = n), (-1,1))
@@ -42,16 +36,21 @@ elif which == 'synth':
     X5 = X0 + X4 + np.reshape(stats.norm.rvs(size = n), (-1,1))
     X6 = X5 + np.reshape(stats.norm.rvs(size = n), (-1,1))
     X = np.concatenate((X0,X1,X2,X3,X4,X5,X6), axis = 1)
-
-pc_algorithm.find_dag(X, confidence = 0.1, whichseed=1).pc_dag()
-
+elif which == 'wine':
+    with open('C:/Users/Sam/Dropbox/UniversityStuff/UCL/Project/Data/Wine.csv', 'rt') as f:
+        X = np.loadtxt(f, delimiter=";")
+    feature_names = ['classes', 'Alcohol', 'Malic acid', 'Ash', 'Alcalinity of ash', 'Magnesium', 'Total phenols',
+                     'Flavanoids', 'Nonflavanoid phenols', 'Proanthocyanins', 'Color intensity',
+                     'Hue', 'OD280 / OD315 of diluted wines', 'Proline']
+elif which == 'glass':
+    with open('C:/Users/Sam/Dropbox/UniversityStuff/UCL/Project/Data/glass.csv', 'rt') as f:
+        X = np.loadtxt(f, delimiter=",", skiprows = 1)
 
 importlib.reload(support), importlib.reload(compare), importlib.reload(combine), importlib.reload(estimate)
 
-estimate.find_neighbours(X, confidence = 0.05, feature_names=feature_names, method = 'stacking')
+estimate.find_neighbours(X, confidence = 0.1, feature_names=feature_names, method = 'multiplexing')
 
 estimate.find_neighbours(X, confidence = 0.05, method = 'stacking')
 
-estimate.find_neighbours(X)
+estimate.mutual_independence(X[:,0:4],X[:,4:8])
 
-compare.pred_indep(X[:,0:1], X[:,1:15])

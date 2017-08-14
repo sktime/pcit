@@ -132,6 +132,11 @@ def get_loss_statistics(regr_loss, baseline_loss, parametric, confidence):
     if parametric:
         tt_res = stats.ttest_rel(regr_loss, baseline_loss)
         p_value = (tt_res[0] > 0) + np.sign((tt_res[0] < 0) - 0.5) * tt_res[1] / 2
+        loss_stat = compare_methods(regr_loss, baseline_loss).loss_statistics()
+        diff_mean = loss_stat.loss_means[1] - loss_stat.loss_means[0]
+        diff_se = np.sqrt(loss_stat.loss_se[0] ** 2 + loss_stat.loss_se[1] ** 2)
+        conf_int = (diff_mean + stats.norm.ppf(confidence) * diff_se, diff_mean,
+                            diff_mean + stats.norm.ppf(1 - confidence) * diff_se)
     else:
         loss_stat = compare_methods(regr_loss, baseline_loss).evaluate()
         p_value = loss_stat.prob
@@ -142,7 +147,7 @@ def get_loss_statistics(regr_loss, baseline_loss, parametric, confidence):
 
     return p_value, conf_int
 
-def pred_indep(y, x, method_type = None, z = None, method = 'multiplexing', estimators = None,
+def pred_indep(y, x, method_type = None, z = None, method = 'stacking', estimators = None,
                         cutoff_categorical = 10, parametric = False, confidence = 0.05, symmetric = True):
 
     for twice in range(2):
@@ -171,11 +176,11 @@ def pred_indep(y, x, method_type = None, z = None, method = 'multiplexing', esti
             p_values[i], conf_int[i] = get_loss_statistics(loss, base_loss, parametric, confidence)
 
         if symmetric and ('p_values_1' not in locals()):
-                y_old = y
-                y = x
-                x = y_old
-                p_values_1 = p_values
-                conf_int_out = conf_int
+                y_old = y.copy()
+                y = x.copy()
+                x = y_old.copy()
+                p_values_1 = p_values.copy()
+                conf_int_out = conf_int.copy()
         else:
             break
 

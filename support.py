@@ -1,6 +1,6 @@
 import numpy as np
-from scipy import stats
-from sklearn import linear_model, ensemble,utils, preprocessing
+import networkx as nx
+import matplotlib.pyplot as plt
 
 def get_data_round(train, test, i):
     x = np.delete(train, i, axis=1)
@@ -75,3 +75,65 @@ class descendants():
         n = self.skeleton.shape[1]
         neighbours = [x for x in range(n) if self.skeleton[i, x] == 1]
         return neighbours
+
+
+def draw_graph(skeleton, feature_names = None, title_graph = None):
+    G = nx.from_numpy_matrix(skeleton)
+    if feature_names is not None:
+        labels = {}
+        for i in range(len(feature_names)):
+            labels.update({i: feature_names[i]})
+        nx.relabel_nodes(G, labels, copy=False)
+
+    graph_pos = nx.spring_layout(G)
+    graph_labels = [x for x in graph_pos]
+    graph_pos_up = dict()
+    for i in range(len(graph_labels)):
+        new_position = graph_pos[graph_labels[i]] + np.array((0,0.05))
+        graph_pos_up[graph_labels[i]] = new_position
+
+
+    nx.draw_networkx_nodes(G, graph_pos, node_size=1000, node_color='blue', alpha=0.3)
+    nx.draw_networkx_edges(G, graph_pos, alpha=0.5, font_color = 'blue', style = 'dotted', width = 2)
+    nx.draw_networkx_labels(G, graph_pos_up, font_size=15, font_family='sans-serif')
+    plt.title(title_graph)
+
+    plt.show()
+
+def draw_graph_edgelabel(skeleton, feature_names = None):
+    B = skeleton[0,0]
+    G = nx.from_numpy_matrix(skeleton)
+
+    if feature_names is not None:
+        labels = {}
+        for i in range(len(feature_names)):
+            labels.update({i: feature_names[i]})
+        nx.relabel_nodes(G, labels, copy=False)
+
+    graph_pos = nx.shell_layout(G)
+    graph_labels = [x for x in graph_pos]
+    graph_pos_up = dict()
+
+    for i in range(len(graph_labels)):
+        new_position = graph_pos[graph_labels[i]] + np.array((0,0.05))
+        graph_pos_up[graph_labels[i]] = new_position
+
+    edges = G.edges()
+    idx1 = [x for x in edges]
+
+    for i in idx1:
+        weight_round = G[i[0]][i[1]]['weight']
+        if weight_round <= 7:
+            G[i[0]][i[1]]['color'] = 'g'
+        elif weight_round > (1 / 3 * B):
+            G[i[0]][i[1]]['color'] = 'b'
+        else:
+            G[i[0]][i[1]]['color'] = 'r'
+
+    graph_pos = nx.spring_layout(G)
+
+    colors = [G[u][v]['color'] for u, v in edges]
+
+    nx.draw_networkx_nodes(G, graph_pos, node_size=1000, node_color='blue', alpha=0.3)
+    nx.draw_networkx_edges(G, graph_pos, alpha=0.5, edge_color=colors, style = 'dotted', width = 4)
+    nx.draw_networkx_labels(G, graph_pos, font_size=15, font_family='sans-serif')
