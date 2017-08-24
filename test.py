@@ -1,17 +1,13 @@
-from sklearn.datasets import load_boston, load_iris
-from sklearn import linear_model
-from sklearn import tree, naive_bayes, ensemble, svm
-from sklearn import dummy, preprocessing
-from sklearn import metrics
 import importlib
-import support, combine, estimate, compare
+
 import numpy as np
 from scipy import stats
-import time
-from sklearn.multioutput import MultiOutputEstimator
-import networkx as nx
-import matplotlib.pyplot as plt
-import pc_algorithm
+from sklearn.datasets import load_boston, load_iris
+
+import combine
+import compare
+import estimate
+import support
 
 ## bost, iris, data, stock, synth
 which = 'bost'
@@ -48,9 +44,5 @@ elif which == 'glass':
 
 importlib.reload(support), importlib.reload(compare), importlib.reload(combine), importlib.reload(estimate)
 
-estimate.find_neighbours(X, confidence = 0.1, feature_names=feature_names, method = 'multiplexing')
-
-estimate.find_neighbours(X, confidence = 0.05, method = 'stacking')
-
-estimate.mutual_independence(X[:,0:4],X[:,4:8])
+estimate.find_neighbours(X, confidence = 0.1, estimator=combine.MetaEstimator(method = None))
 

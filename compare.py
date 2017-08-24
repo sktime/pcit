@@ -2,6 +2,7 @@ import numpy as np
 from scipy import stats
 from sklearn.model_selection import train_test_split
 from combine import MetaEstimator
+from copy import deepcopy
 
 class compare_methods():
     def __init__(self, resid_1, resid_2):
@@ -147,8 +148,7 @@ def get_loss_statistics(regr_loss, baseline_loss, parametric, confidence):
 
     return p_value, conf_int
 
-def pred_indep(y, x, method_type = None, z = None, method = 'stacking', estimators = None,
-                        cutoff_categorical = 10, parametric = False, confidence = 0.05, symmetric = True):
+def pred_indep(y, x, z = None, estimator = MetaEstimator(), parametric = False, confidence = 0.05, symmetric = True):
 
     for twice in range(2):
         if z is not None:
@@ -163,15 +163,14 @@ def pred_indep(y, x, method_type = None, z = None, method = 'stacking', estimato
         conf_int = np.ones(p_out).astype(list)
 
         for i in range(p_out):
+            estimator_base = deepcopy(estimator)
+            estimator_cont = deepcopy(estimator)
             if z is None:
-                base_loss = MetaEstimator(method, estimators, method_type,cutoff_categorical,
-                                            baseline = True).get_residuals(x_tn, x_ts, y_tn[:, i],y_ts[:, i])
+                base_loss = estimator_base.get_residuals(x_tn, x_ts, y_tn[:, i],y_ts[:, i], baseline = True)
             else:
-                base_loss = MetaEstimator(method, estimators, method_type,
-                                          cutoff_categorical).get_residuals(z_tn, z_ts, y_tn[:,i], y_ts[:,i])
+                base_loss = estimator_base.get_residuals(z_tn, z_ts, y_tn[:,i], y_ts[:,i])
 
-            loss = MetaEstimator(method, estimators, method_type,
-                                 cutoff_categorical).get_residuals(x_tn, x_ts, y_tn[:,i], y_ts[:,i])
+            loss = estimator_cont.get_residuals(x_tn, x_ts, y_tn[:,i], y_ts[:,i])
 
             p_values[i], conf_int[i] = get_loss_statistics(loss, base_loss, parametric, confidence)
 

@@ -6,7 +6,7 @@ from support import log_loss_resid
 
 class MetaEstimator():
     def __init__(self, method = 'stacking', estimators = None, method_type = None,
-                 cutoff_categorical = 10, baseline = False):
+                 cutoff_categorical = 10):
         self.method = method
         self.estimators = estimators
         self.method_type = method_type
@@ -15,13 +15,13 @@ class MetaEstimator():
         self.predictions = None
         self.resid = None
         self.classes = None
-        self.baseline = baseline
         self.losses = []
+        self.baseline = False
 
     def get_estimators(self, y):
         self.estimators = []
         if self.method_type == 'regr':
-            self.estimators.append(linear_model.ElasticNetCV(random_state=1))
+            self.estimators.append(linear_model.ElasticNetCV(random_state=1, normalize=True))
             self.estimators.append(ensemble.GradientBoostingRegressor(random_state=1))
             self.estimators.append(ensemble.RandomForestRegressor(random_state=1))
             if y.shape[0] < 1000:
@@ -30,7 +30,7 @@ class MetaEstimator():
             if y.shape[0] < 50:
                 if len(np.unique(y)) == 2:
                     self.estimators.append(naive_bayes.BernoulliNB())
-                    self.estimators.append(linear_model.SGDClassifier(loss='log', random_state=1))  # Logistic Regression
+                    self.estimators.append(linear_model.SGDClassifier(loss='log', random_state=1))
                 else:
                     self.estimators.append(naive_bayes.MultinomialNB())
             self.estimators.append(naive_bayes.GaussianNB())
@@ -47,7 +47,7 @@ class MetaEstimator():
                 self.get_estimators(y)
             else:
                 if self.method_type == 'regr':
-                    self.estimators = linear_model.LassoCV()
+                    self.estimators = linear_model.LassoCV(normalize=True)
                 elif self.method_type == 'classif':
                     self.estimators = ensemble.RandomForestClassifier(random_state=1)
         else:
@@ -95,7 +95,8 @@ class MetaEstimator():
 
         return self.predictions
 
-    def get_residuals(self, x_train, x_test, y_train, y_test):
+    def get_residuals(self, x_train, x_test, y_train, y_test, baseline = False):
+        self.baseline = baseline
         if self.baseline == False:
             self.fit(x_train,y_train)
             if self.method_type == 'regr':

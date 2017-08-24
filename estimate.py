@@ -1,10 +1,11 @@
 import numpy as np
 from compare import FDRcontrol, pred_indep
+from combine import MetaEstimator
 import networkx as nx
 import matplotlib.pyplot as plt
 
 
-def find_neighbours(X, estimators = None, confidence = 0.05, feature_names = None, method = None):
+def find_neighbours(X, estimator = MetaEstimator(), confidence = 0.05):
     p = X.shape[1]
     skeleton = np.reshape(np.zeros(p**2), (p,p))
 
@@ -14,7 +15,7 @@ def find_neighbours(X, estimators = None, confidence = 0.05, feature_names = Non
             output_var = np.reshape(X[:,j], (-1,1))
             conditioning_set = np.delete(X, (i,j), 1)
             p_values_adj, which_predictable, independent, ci = pred_indep(output_var, input_var, z = conditioning_set,
-                                                    confidence= confidence, estimators = estimators, method = method)
+                                                    confidence = confidence, estimator = estimator)
             skeleton[j,i] = np.min(p_values_adj)
             skeleton[i,j] = skeleton[j,i]
     skeleton_adj = (FDRcontrol(skeleton, confidence)[0] < confidence) * 1
