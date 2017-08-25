@@ -1,10 +1,35 @@
-from scipy import stats
 import numpy as np
 import itertools
 import networkx as nx
 import matplotlib.pyplot as plt
-from support import descendants
 from compare import pred_indep
+
+
+class descendants():
+    def __init__(self, skeleton):
+        self.skeleton = skeleton
+        self.desc = list()
+
+    def dir_desc(self, i):
+        n = self.skeleton.shape[1]
+        self.desc.extend([x for x in range(n) if (self.skeleton[i, x] == 2) and (x not in self.desc)])
+        return self.desc
+
+    def all_desc(self, i):
+        self.dir_desc(i)
+        old_len = -1
+        new_len = 0
+        while old_len < new_len:
+            old_len = new_len
+            for q in self.desc:
+                self.dir_desc(q)
+            new_len = len(self.desc)
+        return self.desc
+
+    def undir_neighb(self, i):
+        n = self.skeleton.shape[1]
+        neighbours = [x for x in range(n) if self.skeleton[i, x] == 1]
+        return neighbours
 
 class find_dag():
     def __init__(self, X, confidence=0.05, whichseed=1):

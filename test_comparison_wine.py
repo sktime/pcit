@@ -23,13 +23,8 @@ X1 = Wine[:,1:2]
 X2 = Wine[:,2:3]
 noise = Wine[:,5:6]
 
-tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-3, 0.4e-3, 1e-4],'C': [1, 10, 20]},
-                    {'kernel': ['poly'], 'degree': [2, 3]}]
-clf = ensemble.BaggingRegressor(model_selection.GridSearchCV(svm.SVR(C=1), tuned_parameters, cv=3),
-                                max_samples=0.5, n_jobs=50)
-
-n_range = [100,200,500,1000,2000,5000]
-B = 50
+n_range = [100,200,500,750,1000,2000,3000,4000,5000]
+B = 500
 power = []
 time_sample_size = []
 
@@ -48,10 +43,11 @@ for sample_size in n_range:
         X2_round = scale(X2_round)
         Z = scale(Z)
 
-        temp, temp, indep, temp = pred_indep(X1_round, X2_round, z = Z,
-                                    estimator=MetaEstimator(estimators=(clf,clf), method = None))
+        temp, temp, indep, temp = pred_indep(X1_round, X2_round, z = Z)
+
 
         mistakes += indep[0]
         print(sample_size, i)
     power.append(1 - mistakes / B)
     time_sample_size.append(time.time() - tic)
+

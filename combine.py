@@ -5,6 +5,26 @@ from sklearn.model_selection import cross_val_score
 from support import log_loss_resid
 
 class MetaEstimator():
+    '''
+    This function implements the MetaEstimator class.  An estimator of the type MetaEstimator
+    is a collection of methods and routines that are needed to automaticall find optimal
+    prediction functionals for prediction tasks. In particular, it combines automatically
+    determining if the task is regression or classification, finding the optimal prediction
+    functional, and implements routines to get the residuals  (which lack in sklearn)
+    ---------------------
+    Attributes:
+        - method: ensembling method [stacking (default), multiplexing, or None]ensembling method]
+
+        - estimators: tuple with two lists of sklearn estimators, regression and classification
+                        default is None, in which case predefined estimator lists are used
+
+        - method_type: 'regr' or 'classif', default is None, which denotes automatic detection
+                        if regressionor classification problem
+
+        - cutoff_categorical: if unique values in outcome are below this thre classification
+    '''
+    
+    
     def __init__(self, method = 'stacking', estimators = None, method_type = None,
                  cutoff_categorical = 10):
         self.method = method
@@ -19,6 +39,13 @@ class MetaEstimator():
         self.baseline = False
 
     def get_estimators(self, y):
+        '''
+        Returns a list of estimators appropriate for the supervised learning problem.
+        Distinctions are made between regression and classification problems, different sample
+        sizes, and different types of output variables. When possible, seeds are set to achieve
+        constant results
+        '''
+
         self.estimators = []
         if self.method_type == 'regr':
             self.estimators.append(linear_model.ElasticNetCV(random_state=1, normalize=True))
@@ -39,9 +66,18 @@ class MetaEstimator():
                 self.estimators.append(svm.SVC(probability=True))
 
     def fit(self, x, y):
+        '''
+        Fit method for the MetaEstimator. Output is a fitted estimator, that can then be used
+        for prediction.
+        '''
+        
+        # Determine if regression or classification problem, by comparing number of
+        # unique values in output against threshold
         if self.method_type is None:
             is_above = len(np.unique(y, axis=0)) > self.cutoff_categorical
             self.method_type = ('classif','regr')[is_above]
+        
+        # Fetch the appropriate list of estimators
         if self.estimators is None:
             if self.method is not None:
                 self.get_estimators(y)
@@ -55,32 +91,44 @@ class MetaEstimator():
                 self.estimators = self.estimators[0]
             elif self.method_type == 'classif':
                 self.estimators = self.estimators[1]
-
+        
+        # Collect information on classes in training set (needed later)
         if self.method_type == 'classif':
             self.classes = dummy.DummyClassifier().fit(x, y).classes_
 
+        # Fit according to respective ensembling method
         if self.method == 'stacking':
             if self.method_type == 'regr':
                 self.fitted = regressor.StackingRegressor(regressors=self.estimators,
                                             meta_regressor=linear_model.LinearRegression()).fit(x, y)
+
             elif self.method_type == 'classif':
                 self.fitted = classifier.StackingClassifier(classifiers=self.estimators,
                             meta_classifier=linear_model.LogisticRegression(random_state = 1)).fit(x, y)
+
         elif self.method == 'multiplexing':
             for i in self.estimators:
                 self.losses.append(np.mean(cross_val_score(i, x, y)))
-
+            # For multiplexing, cross validation scores determine which estimator is chosen
             self.fitted  = self.estimators[np.argmin(self.losses)].fit(x, y)
+
         else:
             self.fitted = self.estimators.fit(x, y)
 
-        return self.fitted
+        return self
 
     def fit_baseline(self, x, y):
+        '''
+        Fit the baseline for the MetaEstimator. That is, depending on the loss function, determine
+        the optimal constant predictor, based on the training data on the output
+        '''
+        
+        # Determine if regression or classification problem
         if self.method_type is None:
             is_above = len(np.unique(y, axis=0)) > self.cutoff_categorical
             self.method_type = ('classif','regr')[is_above]
-
+        
+        # Fit a Dummy (constant) estimator
         if self.method_type == 'regr':
             self.fitted = dummy.DummyRegressor().fit(x, y)
         else:
@@ -88,6 +136,10 @@ class MetaEstimator():
             self.classes = dummy.DummyClassifier().fit(x, y).classes_
 
     def predict(self, x):
+        '''Make predictions on a new set of data x using the fitted MetaEstimator'''
+        if self.fitted == None:
+            error('model needs to be fitted before predictions can be made')
+            
         if self.method_type == 'regr':
             self.predictions = self.fitted.predict(x)
         else:
@@ -96,19 +148,26 @@ class MetaEstimator():
         return self.predictions
 
     def get_residuals(self, x_train, x_test, y_train, y_test, baseline = False):
+        '''Returns the residuals for the prediction. To avoid excess code, this is
+        called directly on the unfitted estimator'''
+
         self.baseline = baseline
-        if self.baseline == False:
+        if baseline == False:
             self.fit(x_train,y_train)
             if self.method_type == 'regr':
                 self.resid = np.power(self.predict(x_test) - y_test, 2)
+                # Squared loss residuals
             else:
-                self.resid = log_loss_resid(self.fitted, self.predict(x_test), y_test, self.classes, self.baseline)
+                self.resid = log_loss_resid(self.fitted, self.predict(x_test), y_test, self.classes, baseline)
+                # Log loss residuals
 
         else:
             self.fit_baseline(x_train, y_train)
             if self.method_type == 'regr':
                 self.resid = np.power(self.predict(x_test) - y_test, 2)
+                # Squared loss residuals
             else:
-                self.resid = log_loss_resid(self.fitted, self.predict(x_test), y_test, self.classes, self.baseline)
+                self.resid = log_loss_resid(self.fitted, self.predict(x_test), y_test, self.classes, baseline)
+                #Log loss residuals
 
         return self.resid
