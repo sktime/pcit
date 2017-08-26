@@ -2,7 +2,6 @@ import numpy as np
 from scipy import stats
 import time
 from IndependenceTest import pred_indep
-from sklearn.preprocessing import scale
 
 np.random.seed(1)
 

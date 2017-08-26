@@ -62,7 +62,7 @@ class MetaEstimator():
                     self.estimators.append(naive_bayes.MultinomialNB())
             self.estimators.append(naive_bayes.GaussianNB())
             self.estimators.append(ensemble.RandomForestClassifier(random_state=1))
-            if y.shape[0] < 1000:
+            if y.shape[0] <= 5000:
                 self.estimators.append(svm.SVC(probability=True))
 
     def fit(self, x, y):
