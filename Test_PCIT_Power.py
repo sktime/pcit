@@ -9,7 +9,7 @@ np.random.seed(1)
 #     Wine = np.loadtxt(f, delimiter=";")
 
 # Download data set from https://archive.ics.uci.edu/ml/datasets/wine and store it as 'Wine'
-
+n
 n = Wine.shape[0]
 
 # Extract data
