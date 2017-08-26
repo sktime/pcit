@@ -40,11 +40,6 @@ for sample_size in n_range:
         # Calculate conditioning set, which makes X1_round and X2_round dependent
         Z = np.log(X1_round)*np.exp(X2_round) + noise_round
 
-        # Scale data
-        # X1_round = scale(X1_round)
-        # X2_round = scale(X2_round)
-        # Z = scale(Z)
-
         # Independence test
         temp, temp, indep, temp = pred_indep(X1_round, X2_round, z = Z)
 
