@@ -2,7 +2,7 @@ from sklearn import naive_bayes, ensemble, linear_model, dummy, svm
 from mlxtend import classifier, regressor
 import numpy as np
 from sklearn.model_selection import cross_val_score
-from support import log_loss_resid
+from Support import log_loss_resid
 
 class MetaEstimator():
     '''
@@ -51,7 +51,7 @@ class MetaEstimator():
             self.estimators.append(linear_model.ElasticNetCV(random_state=1, normalize=True))
             self.estimators.append(ensemble.GradientBoostingRegressor(random_state=1))
             self.estimators.append(ensemble.RandomForestRegressor(random_state=1))
-            if y.shape[0] < 1000:
+            if y.shape[0] <= 5000:
                 self.estimators.append(svm.SVR())
         else:
             if y.shape[0] < 50:

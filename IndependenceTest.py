@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import stats
 from sklearn.model_selection import train_test_split
-from combine import MetaEstimator
+from MetaEstimator import MetaEstimator
 from copy import deepcopy
 
 class compare_methods():
