@@ -2,7 +2,7 @@ import numpy as np
 import itertools
 import networkx as nx
 import matplotlib.pyplot as plt
-from compare import pred_indep
+from IndependenceTest import pred_indep
 
 
 class descendants():
