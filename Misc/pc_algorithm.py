@@ -1,8 +1,10 @@
-import numpy as np
 import itertools
-import networkx as nx
+
 import matplotlib.pyplot as plt
-from IndependenceTest import pred_indep
+import networkx as nx
+import numpy as np
+
+from PCIT.IndependenceTest import pred_indep
 
 
 class descendants():

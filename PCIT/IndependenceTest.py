@@ -1,8 +1,11 @@
+from copy import deepcopy
+
 import numpy as np
 from scipy import stats
 from sklearn.model_selection import train_test_split
-from MetaEstimator import MetaEstimator
-from copy import deepcopy
+
+from PCIT.MetaEstimator import MetaEstimator
+
 
 class compare_methods():
     '''

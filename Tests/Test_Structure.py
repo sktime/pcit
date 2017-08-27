@@ -1,9 +1,12 @@
-from StructureEstimation import find_neighbours
-from MetaEstimator import MetaEstimator
+import time
+
 import numpy as np
+from StructureEstimation import find_neighbours
 from scipy import stats
 from sklearn import metrics
-import time
+
+from PCIT.MetaEstimator import MetaEstimator
+
 
 def random_gauss(size_mat=10, sparse=0.2, n=1000, thresh = 0.1):
     '''

@@ -1,6 +1,7 @@
 import numpy as np
 from IndependenceTest import FDRcontrol, pred_indep
-from MetaEstimator import MetaEstimator
+
+from PCIT.MetaEstimator import MetaEstimator
 
 
 def find_neighbours(X, estimator = MetaEstimator(), confidence = 0.05):

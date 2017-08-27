@@ -1,5 +1,7 @@
 import numpy as np
-from StructureEstimation import find_neighbours
+
+from PCIT.StructureEstimation import find_neighbours
+
 # from Support import draw_graph_edgelabel
 
 # with open('C:/Users/Sam/Dropbox/UniversityStuff/UCL/Project/Data/car.csv', 'rt') as f:

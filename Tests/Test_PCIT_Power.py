@@ -1,7 +1,9 @@
+import time
+
 import numpy as np
 from scipy import stats
-import time
-from IndependenceTest import pred_indep
+
+from PCIT.IndependenceTest import pred_indep
 
 np.random.seed(1)
 

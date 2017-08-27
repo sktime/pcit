@@ -1,13 +1,13 @@
 import importlib
 
+import IndependenceTest
+import StructureEstimation
+import Support
 import numpy as np
 from scipy import stats
 from sklearn.datasets import load_boston, load_iris
 
-import MetaEstimator
-import IndependenceTest
-import StructureEstimation
-import Support
+from PCIT import MetaEstimator
 
 ## bost, iris, data, stock, synth
 which = 'bost'
@@ -42,7 +42,8 @@ elif which == 'glass':
     with open('C:/Users/Sam/Dropbox/UniversityStuff/UCL/Project/Data/glass.csv', 'rt') as f:
         X = np.loadtxt(f, delimiter=",", skiprows = 1)
 
-importlib.reload(Support), importlib.reload(IndependenceTest), importlib.reload(MetaEstimator), importlib.reload(StructureEstimation)
+importlib.reload(Support), importlib.reload(IndependenceTest), importlib.reload(MetaEstimator), importlib.reload(
+    StructureEstimation)
 
 StructureEstimation.find_neighbours(X, confidence = 0.1, estimator=MetaEstimator.MetaEstimator(method = None))
 
