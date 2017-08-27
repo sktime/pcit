@@ -1,6 +1,6 @@
 import numpy as np
 
-from PCIT.StructureEstimation import find_neighbours
+from pcit.StructureEstimation import find_neighbours
 
 # from Support import draw_graph_edgelabel
 

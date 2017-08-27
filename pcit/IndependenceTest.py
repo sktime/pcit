@@ -4,7 +4,7 @@ import numpy as np
 from scipy import stats
 from sklearn.model_selection import train_test_split
 
-from PCIT.MetaEstimator import MetaEstimator
+from pcit.MetaEstimator import MetaEstimator
 
 
 class compare_methods():

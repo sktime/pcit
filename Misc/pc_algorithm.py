@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 
-from PCIT.IndependenceTest import pred_indep
+from pcit.IndependenceTest import pred_indep
 
 
 class descendants():

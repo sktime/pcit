@@ -5,7 +5,7 @@ from StructureEstimation import find_neighbours
 from scipy import stats
 from sklearn import metrics
 
-from PCIT.MetaEstimator import MetaEstimator
+from pcit.MetaEstimator import MetaEstimator
 
 
 def random_gauss(size_mat=10, sparse=0.2, n=1000, thresh = 0.1):

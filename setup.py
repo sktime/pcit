@@ -1,12 +1,13 @@
 from distutils.core import setup
 
 setup(
-    name='PCIT',
-    version='1',
-    packages=['', 'PCIT'],
-    url='https://github.com/SamBurkart/PCIT',
+    name='pcit',
+    version='1.1.2',
+    packages=['', 'pcit'],
+    url='https://github.com/SamBurkart/pcit',
     license='MIT License',
-    author='Sam',
+    author='Samuel Burkart',
     author_email='samuel.burkart@aol.com',
-    description='Predictive conditional independence test'
+    description='',
+    #install_requires=['sklearn', 'scipy', 'mlxtend'],
 )

@@ -3,7 +3,7 @@ from mlxtend import classifier, regressor
 from sklearn import naive_bayes, ensemble, linear_model, dummy, svm
 from sklearn.model_selection import cross_val_score
 
-from PCIT.Support import log_loss_resid
+from pcit.Support import log_loss_resid
 
 
 class MetaEstimator():
