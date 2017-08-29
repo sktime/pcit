@@ -8,11 +8,34 @@ This package implements a multivariate conditional independence independence tes
 ## Code Example
 
 There are 3 main functions:
-- [MetaEstimator](https://github.com/SamBurkart/pcit/tree/master/pcit): Estimator class used for independence testing
-- Pred_indep: Multivariate Conditional Independence Test
-- find_neighbours: Undirected graph skeleton learning algorithm
+- [MetaEstimator](https://github.com/SamBurkart/pcit/blob/master/pcit/MetaEstimator.py): Estimator class used for independence testing
+- [Pred_indep](https://github.com/SamBurkart/pcit/blob/master/pcit/IndependenceTest.py): Multivariate Conditional Independence Test
+- [find_neighbours](https://github.com/SamBurkart/pcit/blob/master/pcit/StructureEstimation.py): Undirected graph skeleton learning algorithm
 
+### Testing if X is independent of Y, conditional on Z
 
+pred_indep(X, Y, z = Z)
+
+### Testing if X is independent of Y, conditional on Z
+### using a custom MetaEstimator, multiplexing over a manually chosen set of estimators:
+
+```python
+from sklearn.linear_model import RidgeCV, LassoCV,
+                    SGDClassifier, LogisticRegression
+
+regressors = [RidgeCV(), LassoCV()]
+classifiers = [SGDClassifier(), LogisticRegression()]
+custom_estim = MetaEstimator(method = 'multiplexing',
+                estimators = (regressors, classifiers))
+
+pred_indep(X, Y, z = Z, estimator = custom_estim)
+```
+
+### Learning the undirected graph with the undirected skeleton of X:
+
+```python
+find_neighbours(X)
+```
 
 ## Motivation
 
