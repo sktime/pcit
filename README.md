@@ -12,12 +12,12 @@ There are 3 main functions:
 - [Pred_indep](https://github.com/SamBurkart/pcit/blob/master/pcit/IndependenceTest.py): Multivariate Conditional Independence Test
 - [find_neighbours](https://github.com/SamBurkart/pcit/blob/master/pcit/StructureEstimation.py): Undirected graph skeleton learning algorithm
 
-### Testing if X is independent of Y, conditional on Z
+##### Testing if X is independent of Y, conditional on Z
 
 pred_indep(X, Y, z = Z)
 
-### Testing if X is independent of Y, conditional on Z
-### using a custom MetaEstimator, multiplexing over a manually chosen set of estimators:
+##### Testing if X is independent of Y, conditional on Z
+##### using a custom MetaEstimator, multiplexing over a manually chosen set of estimators:
 
 ```python
 from sklearn.linear_model import RidgeCV, LassoCV,
@@ -31,7 +31,7 @@ custom_estim = MetaEstimator(method = 'multiplexing',
 pred_indep(X, Y, z = Z, estimator = custom_estim)
 ```
 
-### Learning the undirected graph with the undirected skeleton of X:
+##### Learning the undirected graph with the undirected skeleton of X:
 
 ```python
 find_neighbours(X)
@@ -39,7 +39,10 @@ find_neighbours(X)
 
 ## Motivation
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
+Conditional as well as multivariate independence testing are difficult problems lacking a straightforward, scalable and easy-to-use solution. This project connects the classical independence testing task to the supervised learning workflow. This has the following advantages:
+- The link the the highly research supervised learning workflow allows classical independence testing to grow its power at the same rate as supervised learning
+- The sophisticated knowledge of hyperparameter-tuning in supervised prediction removes any need for hyperparameter tuning and manual choices prevalent in current methodology
+- As a wrapper for the [sklearn](http://scikit-learn.org/stable/) package, the pcit is easy to use and adjust
 
 ## Installation
 Can be installed through pip
@@ -48,18 +51,18 @@ Can be installed through pip
 pip install pcit
 ```
 
-## API Reference
-
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+The dependencies are:
+- [Scikit-learn](http://scikit-learn.org/stable/)
+- [SciPy](https://scipy.org/)
+- [MLXTEND](https://github.com/rasbt/mlxtend)
 
 ## Tests
+Three tests can be run:
 
-Describe and show how to run the tests with code examples.
-
-## Contributors
-
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+[Test_PCIT_Power](https://github.com/SamBurkart/pcit/blob/master/Tests/Test_PCIT_Power.py): Tests the power for increasing sample sizes on a difficult v-structured problem. Matlab code for same problem to compare with the "Kernel Conditional Independence Test" can be found [here](https://github.com/SamBurkart/pcit/blob/master/further/Test_KCIT_Power.m)
+[Test_PCIT_Consistency](https://github.com/SamBurkart/pcit/blob/master/Tests/Test_PCIT_Consistency.py): Here the consistency under perturbations in the data is assessed.
+[Test_Structure](https://github.com/SamBurkart/pcit/blob/master/Tests/Test_Structure.py): Here the power and false-discovery rate control of the graphical model structure learning algorithm are assessed
 
 ## License
 
-A short snippet describing the license (MIT, Apache, etc.)
+MIT License
