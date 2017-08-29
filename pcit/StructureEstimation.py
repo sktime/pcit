@@ -29,7 +29,7 @@ def find_neighbours(X, estimator = MetaEstimator(), confidence = 0.05):
             conditioning_set = np.delete(X, (i,j), 1)
 
             # Conditional independence test conditional on all other variables
-            p_values_adj, which_predictable, independent, ci = pred_indep(output_var, input_var,
+            p_values_adj, independent, ci = pred_indep(output_var, input_var,
                         z = conditioning_set, confidence = confidence, estimator = estimator)
 
             # P-value of null-hypothesis that pair is independent give all other variables

@@ -1,13 +1,18 @@
-# Predictive Conditional Independence Testing
+# Predictive Conditional Independence Testing (PCIT)
 ## with applications in graphical model structure learning
 
 ## Synopsis
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+This package implements a multivariate conditional independence independence test and an algorithm for learning directed graphs from data based on the PCIT
 
 ## Code Example
 
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+There are 3 main functions:
+- MetaEstimator: Estimator class used for independence testing
+- Pred_indep: Multivariate Conditional Independence Test
+- find_neighbours: Undirected graph skeleton learning algorithm
+
+
 
 ## Motivation
 
@@ -16,7 +21,9 @@ A short description of the motivation behind the creation and maintenance of the
 ## Installation
 Can be installed through pip
 
-`pip install pcit`
+```python
+pip install pcit
+```
 
 ## API Reference
 

@@ -15,7 +15,7 @@ n = X.shape[0]
 B = 100
 
 # Learnt structure on original data set
-temp, skeleton_sum = find_neighbours(X, method ='stacking')
+temp, skeleton_sum = find_neighbours(X)
 
 # Resamples
 for i in range(B):

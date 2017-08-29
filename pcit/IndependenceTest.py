@@ -247,6 +247,10 @@ def pred_indep(y, x, z = None, estimator = MetaEstimator(), parametric = False, 
         - conf_int_out: confidence interval for difference in prediction error for each y
     '''
 
+    if not hasattr(estimator, 'isMetaEstimator'):
+        print('estimator needs to be of type MetaEstimator')
+        return
+
     # Run it twice to make result symmetric, if needed
     for twice in range(2):
         if z is not None:
@@ -310,7 +314,6 @@ def pred_indep(y, x, z = None, estimator = MetaEstimator(), parametric = False, 
 
         else:
             p_values_adj = p_values_1
-            which_predictable = (0, [])[(p_values_1[0] > confidence)]
 
     else:
         #Distinction between univariate and multivariate
@@ -321,7 +324,6 @@ def pred_indep(y, x, z = None, estimator = MetaEstimator(), parametric = False, 
 
         else:
             p_values_adj = p_values
-            which_predictable = (0, [])[p_values[0] > confidence]
             independent = p_values[0] > confidence
 
-    return p_values_adj, which_predictable, independent, conf_int_out
+    return p_values_adj, independent, conf_int_out

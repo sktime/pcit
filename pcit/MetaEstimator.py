@@ -39,6 +39,7 @@ class MetaEstimator():
         self.classes = None
         self.losses = []
         self.baseline = False
+        self.isMetaEstimator = True
 
     def get_estimators(self, y):
         '''

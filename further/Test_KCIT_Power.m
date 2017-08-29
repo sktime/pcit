@@ -1,4 +1,6 @@
-% Load Wine data set and store as Wine 
+% This test is used to compare the PCIT and the KCIT
+
+% Load Wine data set and store as Wine
 % from https://archive.ics.uci.edu/ml/datasets/wine
 
 rng(1)
