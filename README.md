@@ -8,7 +8,7 @@ This package implements a multivariate conditional independence independence tes
 ## Code Example
 
 There are 3 main functions:
-- [MetaEstimator](..pcit/IndependenceTest.py): Estimator class used for independence testing
+- [MetaEstimator](https://github.com/SamBurkart/pcit/tree/master/pcit): Estimator class used for independence testing
 - Pred_indep: Multivariate Conditional Independence Test
 - find_neighbours: Undirected graph skeleton learning algorithm
 
