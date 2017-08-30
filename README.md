@@ -11,7 +11,7 @@ This package implements a multivariate conditional independence independence tes
 
 There are 3 main functions:
 - [MetaEstimator](https://github.com/SamBurkart/pcit/blob/master/pcit/MetaEstimator.py): Estimator class used for independence testing
-- [pred_indep](https://github.com/SamBurkart/pcit/blob/master/pcit/IndependenceTest.py): Multivariate Conditional Independence Test
+- [PCIT](https://github.com/SamBurkart/pcit/blob/master/pcit/IndependenceTest.py): Multivariate Conditional Independence Test
 - [find_neighbours](https://github.com/SamBurkart/pcit/blob/master/pcit/StructureEstimation.py): Undirected graph skeleton learning algorithm
 
 
