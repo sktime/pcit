@@ -251,6 +251,18 @@ def pred_indep(y, x, z = None, estimator = MetaEstimator(), parametric = False, 
         print('estimator needs to be of type MetaEstimator')
         return
 
+    if not parametric in [True, False]:
+        print('parametric has to be either "True" or "False"')
+        return
+
+    if (not type(confidence) is float) or (confidence <= 0) or (confidence >= 1):
+        print('confidence needs to be between 0 and 1')
+        return
+
+    if not symmetric in [True, False]:
+        print('symmetric has to be either "True" or "False"')
+        return
+
     # Run it twice to make result symmetric, if needed
     for twice in range(2):
         if z is not None:

@@ -2,6 +2,8 @@ import numpy as np
 from mlxtend import classifier, regressor
 from sklearn import naive_bayes, ensemble, linear_model, dummy, svm
 from sklearn.model_selection import cross_val_score
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import normalize
 
 from pcit.Support import log_loss_resid
 
@@ -41,6 +43,30 @@ class MetaEstimator():
         self.baseline = False
         self.isMetaEstimator = True
 
+        if not self.method in ['stacking', 'multiplexing', None]:
+            print('method needs to be "stacking", "multiplexing" or None')
+            return
+
+        if not self.method_type in ['regr', 'classif', None]:
+            print('method_type needs to be "regr", "classif" or None')
+            return
+
+        if self.estimators is not None:
+                if not type(estimators) is tuple and len(estimators) == 2:
+                    print('custom estimators needs to be a tuple of 2 lists, ([regression estimators], '
+                          '[classification estimators])')
+                    return
+                else:
+                    for i in range(2):
+                        if not type(estimators) == list:
+                            print('custom estimators needs to be a tuple of 2 lists, ([regression estimators], '
+                                  '[classification estimators])')
+                            return
+
+        if not type(cutoff_categorical) == int:
+            print('cutoff_categorical needs to be an integer')
+            return
+
     def get_estimators(self, y):
         '''
         Returns a list of estimators appropriate for the supervised learning problem.
@@ -56,6 +82,7 @@ class MetaEstimator():
             self.estimators.append(ensemble.RandomForestRegressor(random_state=1))
             if y.shape[0] <= 5000:
                 self.estimators.append(svm.SVR())
+
         else:
             if y.shape[0] < 50:
                 if len(np.unique(y)) == 2:
@@ -94,7 +121,7 @@ class MetaEstimator():
                 self.estimators = self.estimators[0]
             elif self.method_type == 'classif':
                 self.estimators = self.estimators[1]
-        
+
         # Collect information on classes in training set (needed later)
         if self.method_type == 'classif':
             self.classes = dummy.DummyClassifier().fit(x, y).classes_

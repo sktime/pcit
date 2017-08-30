@@ -1,13 +1,26 @@
 from distutils.core import setup
+from setuptools import find_packages
+import os
+import sys
 
 setup(
     name='pcit',
-    version='1.1.2',
-    packages=['', 'pcit'],
+
+    version='1.2.0',
+
+    description='Predictive Conditional Independence Testing',
+
+    # The project's main homepage.
     url='https://github.com/SamBurkart/pcit',
-    license='MIT License',
+
+    # Author details
     author='Samuel Burkart',
     author_email='samuel.burkart@aol.com',
-    description='',
-    #install_requires=['sklearn', 'scipy', 'mlxtend'],
+
+    # Choose your license
+    license='MIT',
+
+    # You can just specify the packages manually here if your project is
+    # simple. Or you can use find_packages().
+    packages=find_packages(exclude=['contrib', 'docs', 'tests'])
 )

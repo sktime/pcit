@@ -1,7 +1,7 @@
 import time
 
 import numpy as np
-from StructureEstimation import find_neighbours
+from pcit.StructureEstimation import find_neighbours
 from scipy import stats
 from sklearn import metrics
 
