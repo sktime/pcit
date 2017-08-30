@@ -1,12 +1,10 @@
 from distutils.core import setup
 from setuptools import find_packages
-import os
-import sys
 
 setup(
     name='pcit',
 
-    version='1.2.0',
+    version='1.2.1',
 
     description='Predictive Conditional Independence Testing',
 

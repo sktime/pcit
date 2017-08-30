@@ -219,7 +219,7 @@ def get_loss_statistics(regr_loss, baseline_loss, parametric, confidence):
 
     return p_value, conf_int
 
-def pred_indep(y, x, z = None, estimator = MetaEstimator(), parametric = False, confidence = 0.05, symmetric = True):
+def PCIT(y, x, z = None, estimator = MetaEstimator(), parametric = False, confidence = 0.05, symmetric = True):
     '''
     Conditional independence test using predictive inference to detect if y and x are conditionally
     independent given z

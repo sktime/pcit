@@ -20,12 +20,12 @@ For the following, X, Y and Z can be univariate or multivariate
 ##### Testing if X is independent of Y on a 0.01 confidence level
 
 ```python
-pred_indep(X, Y, confidence = 0.01)
+PCIT(X, Y, confidence = 0.01)
 ```
 
 ##### Testing if X is independent Y, conditional on Z
 ```python
-pred_indep(X, Y, z = Z)
+PCIT(X, Y, z = Z)
 ```
 
 ##### Testing if X is independent of Y, conditional on Z, using a custom MetaEstimator, multiplexing over a manually chosen set of estimators:
@@ -39,7 +39,7 @@ classifiers = [SGDClassifier(), LogisticRegression()]
 custom_estim = MetaEstimator(method = 'multiplexing',
                 estimators = (regressors, classifiers))
 
-pred_indep(X, Y, z = Z, estimator = custom_estim)
+PCIT(X, Y, z = Z, estimator = custom_estim)
 ```
 
 ##### Learning the undirected graph with the undirected skeleton of X:

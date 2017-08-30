@@ -1,5 +1,5 @@
 import numpy as np
-from pcit.IndependenceTest import FDRcontrol, pred_indep
+from pcit.IndependenceTest import FDRcontrol, PCIT
 from pcit.MetaEstimator import MetaEstimator
 
 
@@ -29,7 +29,7 @@ def find_neighbours(X, estimator = MetaEstimator(), confidence = 0.05):
             conditioning_set = np.delete(X, (i,j), 1)
 
             # Conditional independence test conditional on all other variables
-            p_values_adj, independent, ci = pred_indep(output_var, input_var,
+            p_values_adj, independent, ci = PCIT(output_var, input_var,
                         z = conditioning_set, confidence = confidence, estimator = estimator)
 
             # P-value of null-hypothesis that pair is independent give all other variables
@@ -53,7 +53,7 @@ def mutual_independence(X, Z = None, estimators = None, method = None, confidenc
 
     p_values = np.ones(p)
     for i in range(p):
-        p_values_adj, which_predictable, independent, ci = pred_indep(X[:,i:(i+1)],
+        p_values_adj, independent, ci = PCIT(X[:,i:(i+1)],
                                 np.delete(X,i,1), z=Z, confidence=confidence, estimators=estimators, method=method)
         p_values[i] = independent[1]
 

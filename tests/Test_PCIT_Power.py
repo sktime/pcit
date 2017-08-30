@@ -1,7 +1,7 @@
 import time
 import numpy as np
 from scipy import stats
-from pcit.IndependenceTest import pred_indep
+from pcit.IndependenceTest import PCIT
 
 np.random.seed(1)
 
@@ -41,7 +41,7 @@ for sample_size in n_range:
         Z = np.log(X1_round)*np.exp(X2_round) + noise_round
 
         # Independence test
-        temp, indep, temp = pred_indep(X1_round, X2_round, z = Z)
+        temp, indep, temp = PCIT(X1_round, X2_round, z = Z)
 
         # If test made a mistake by attesting independence, update counter
         mistakes += indep[0]
