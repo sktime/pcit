@@ -23,7 +23,7 @@ For the following, X, Y and Z can be univariate or multivariate
 pred_indep(X, Y, confidence = 0.01)
 ```
 
-##### Testing if X is independent a Y, conditional on Z
+##### Testing if X is independent Y, conditional on Z
 ```python
 pred_indep(X, Y, z = Z)
 ```
