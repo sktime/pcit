@@ -17,13 +17,13 @@ There are 3 main functions:
 
 For the following, X, Y and Z can be univariate or multivariate
 
-##### Testing if a X is independent of a Y on a 0.01 confidence level
+##### Testing if X is independent of Y on a 0.01 confidence level
 
 ```python
 pred_indep(X, Y, confidence = 0.01)
 ```
 
-##### Testing if a X is independent of a Y, conditional on Z
+##### Testing if X is independent a Y, conditional on Z
 ```python
 pred_indep(X, Y, z = Z)
 ```
