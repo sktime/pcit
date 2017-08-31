@@ -22,7 +22,7 @@ For the following, X, Y and Z can be univariate or multivariate
 ```python
 PCIT(X, Y, confidence = 0.01)
 ```
-
+ 
 ##### Testing if X is independent Y, conditional on Z
 ```python
 PCIT(X, Y, z = Z)
