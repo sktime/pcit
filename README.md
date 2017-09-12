@@ -17,6 +17,14 @@ There are 3 main functions:
 
 For the following, X, Y and Z can be univariate or multivariate
 
+```python
+from sklearn.datasets import load_boston
+data = load_boston()['data']
+X = data[:,1:2]
+Y = data[:,2:4]
+Z = data[:,4:10]
+```
+
 ##### Testing if X is independent of Y on a 0.01 confidence level
 
 ```python
@@ -45,6 +53,7 @@ PCIT(X, Y, z = Z, estimator = custom_estim)
 ##### Learning the undirected graph with the undirected skeleton of X:
 
 ```python
+X = load_boston()['data']
 find_neighbours(X)
 ```
 

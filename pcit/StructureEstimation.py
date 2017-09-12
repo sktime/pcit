@@ -8,7 +8,7 @@ def find_neighbours(X, estimator = MetaEstimator(), confidence = 0.05):
     Undirected graph skeleton learning routine.
     ----------------
     Attributes:
-        - X: data set for undirected graph estimation
+        - X: data set for undirected graph estimation, size: [samples x dimensions]
         - estimator: object of the MetaEstimator class
         - confidence: false-discovery rate level
 

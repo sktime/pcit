@@ -222,7 +222,9 @@ def get_loss_statistics(regr_loss, baseline_loss, parametric, confidence):
 def PCIT(y, x, z = None, estimator = MetaEstimator(), parametric = False, confidence = 0.05, symmetric = True):
     '''
     Conditional independence test using predictive inference to detect if y and x are conditionally
-    independent given z
+    independent given z.
+
+    All x, y and z should be of the form [samples x dimensions].
     -------------------
     Attributes:
         - z: Conditioning set (can be empty, in which case the test is a marginal independence test)
