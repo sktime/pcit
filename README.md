@@ -30,6 +30,8 @@ Z = data[:,4:10]
 ```python
 PCIT(X, Y, confidence = 0.01)
 ```
+
+The direction of the prediction is X -> Y, and as such the p-values correspond to the hypothesis that adding X does not improve the prediction of Y (one for each dimension in Y). If the parameter 'symmetric' is set to True (default), both directions are tested.
  
 ##### Testing if X is independent Y, conditional on Z
 ```python
