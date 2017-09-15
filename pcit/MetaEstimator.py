@@ -15,6 +15,14 @@ class MetaEstimator():
     prediction functionals for prediction tasks. In particular, it combines automatically
     determining if the task is regression or classification, finding the optimal prediction
     functional, and implements routines to get the residuals  (which lack in sklearn)
+
+    Functions:
+        - get_estimators: Fetch appropriate set of baseline estimators
+        - fit: Fit the estimators and a training set
+        - fit_baseline: Fit the uninformed baseline
+        - predict: Predict on a test set
+        - get_residuals: Calculate the appropriate loss residuals for a training and test set
+
     ---------------------
     Attributes:
         - method: ensembling method [stacking (default), multiplexing, or None]ensembling method]
@@ -26,6 +34,9 @@ class MetaEstimator():
                         if regressionor classification problem
 
         - cutoff_categorical: if unique values in outcome are below this thre classification
+
+    Returns:
+        - Object containing fitted values, predictions, loss residuals etc (depending on function call)
     '''
     
     

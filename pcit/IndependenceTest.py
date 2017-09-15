@@ -10,11 +10,21 @@ from pcit.MetaEstimator import MetaEstimator
 class compare_methods():
     '''
     Class that combines parametric and non-parametric two-sample tests for univariate random variables.
-    Here used to compare prediction residuals of different prediction functionals
+    Here used to compare prediction residuals of different prediction functionals.
+    Functions:
+        - wilcox_onesided: One-sided Wilcoxon-signed rank test
+        - loss_statistic: Calculate loss-means and standard error for squared loss
+        - evaluate: Evaluates all of the above
     -------------------------
     Attributes:
-        - resid_1, resid_2: the residuals of the two prediction functionals
+        - resid_1, resid_2: the residuals of the two prediction functionals, test is resid_1 < resid_2
+    Returns:
+        - method_better: is resid_1 < resid_2 - on any confidence level
+        - prob: p-value of one sided Wilcoxon test
+        - loss_means: mean squared losses for resid_1 and resid_2
+        - loss_se: estimate for standard error for squared loss of resid_1 and resid_2
     '''
+
     def __init__(self, resid_1, resid_2):
         self.resid_1 = resid_1
         self.resid_2 = resid_2
@@ -180,10 +190,16 @@ def get_loss_statistics(regr_loss, baseline_loss, parametric, confidence):
     Support function for the conditional independence test, calculating loss statistics
     while distinguishing between the parametric and non-parametric case
     ----------------------
+    Attributes:
+        - regr_loss: Loss residuals when predicting from X and conditioning set
+        - baseline_loss: Loss residuals when predicting from conditioning set only
+        - parametric: Flag. Parametric or nonparametric test
+        - confidence: Confidence level for test
     Returns:
         - p_values: p-value for one-sided hypothesis that losses are equal
         - conf_int: Confidence interval for difference between losses
     '''
+
     if parametric:
         # Paired t-test, test statistic adjusted for one-sided test
         tt_res = stats.ttest_rel(regr_loss, baseline_loss)
@@ -264,6 +280,7 @@ def PCIT(y, x, z = None, estimator = MetaEstimator(), parametric = False, confid
     if not symmetric in [True, False]:
         print('symmetric has to be either "True" or "False"')
         return
+
 
     # Run it twice to make result symmetric, if needed
     for twice in range(2):

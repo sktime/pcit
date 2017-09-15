@@ -3,7 +3,16 @@ import numpy as np
 # import networkx as nx
 
 def log_loss_resid(estimator, predictions, y, classes, baseline = False):
-    '''This function calculates the log loss residuals'''
+    '''
+    This function calculates the log loss residuals
+    ------------------------------
+    Attributes:
+        - estimator: fitted classifier
+        - predictions: predictions (used when loss residuals are not for baseline)
+        - y: observations
+        - classes: training set classes
+        - baseline: Flag. If true, uninformed baseline loss residuals are calculated
+    '''
     
     new = np.array(())                  # Add classes that are in test set, but not in training set
     for i in np.unique(y):              
