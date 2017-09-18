@@ -8,6 +8,7 @@ This package implements a multivariate conditional independence independence tes
 [MSc Thesis](https://github.com/SamBurkart/pcit/blob/master/MScProject.pdf)
 
 ## Code Example
+##### For details, see the [Manual](https://samburkart.github.io/pcit-manual/)
 
 There are 3 main functions:
 - [MetaEstimator](https://github.com/SamBurkart/pcit/blob/master/pcit/MetaEstimator.py): Estimator class used for independence testing
