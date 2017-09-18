@@ -5,7 +5,7 @@
 
 This package implements a multivariate conditional independence independence test and an algorithm for learning directed graphs from data based on the PCIT
 
-[MSc Thesis](https://github.com/SamBurkart/pcit/blob/master/MScProject.pdf)
+[MSc Thesis](https://github.com/SamBurkart/pcit/blob/master/MSc_Project.pdf)
 
 ## Code Example
 ##### For details, see the [Manual](https://samburkart.github.io/pcit-manual/)
