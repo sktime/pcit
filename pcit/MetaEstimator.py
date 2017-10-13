@@ -11,27 +11,27 @@ from pcit.Support import log_loss_resid
 class MetaEstimator():
     '''
     This function implements the MetaEstimator class.  An estimator of the type MetaEstimator
-    is a collection of methods and routines that are needed to automaticall find optimal
+    is a collection of methods and routines that are needed to automatically find optimal
     prediction functionals for prediction tasks. In particular, it combines automatically
     determining if the task is regression or classification, finding the optimal prediction
     functional, and implements routines to get the residuals  (which lack in sklearn)
 
     Functions:
-        - get_estimators: Fetch appropriate set of baseline estimators
+        - get_estim: Fetch appropriate set of baseline estimators
         - fit: Fit the estimators and a training set
         - fit_baseline: Fit the uninformed baseline
         - predict: Predict on a test set
-        - get_residuals: Calculate the appropriate loss residuals for a training and test set
+        - get_resid: Calculate the appropriate loss residuals for a training and test set
 
     ---------------------
     Attributes:
-        - method: ensembling method [stacking (default), multiplexing, or None]ensembling method]
+        - method: ensembling method [stacking (default), multiplexing, or None]
 
         - estimators: tuple with two lists of sklearn estimators, regression and classification
                         default is None, in which case predefined estimator lists are used
 
         - method_type: 'regr' or 'classif', default is None, which denotes automatic detection
-                        if regressionor classification problem
+                        if regression or classification problem
 
         - cutoff_categorical: if unique values in outcome are below this thre classification
 
@@ -69,7 +69,7 @@ class MetaEstimator():
                     return
                 else:
                     for i in range(2):
-                        if not type(estimators) == list:
+                        if not type(estimators[i]) == list:
                             print('custom estimators needs to be a tuple of 2 lists, ([regression estimators], '
                                   '[classification estimators])')
                             return
@@ -78,7 +78,7 @@ class MetaEstimator():
             print('cutoff_categorical needs to be an integer')
             return
 
-    def get_estimators(self, y):
+    def get_estim(self, y):
         '''
         Returns a list of estimators appropriate for the supervised learning problem.
         Distinctions are made between regression and classification problems, different sample
@@ -121,7 +121,7 @@ class MetaEstimator():
         # Fetch the appropriate list of estimators
         if self.estimators is None:
             if self.method is not None:
-                self.get_estimators(y)
+                self.get_estim(y)
             else:
                 if self.method_type == 'regr':
                     self.estimators = linear_model.LassoCV(normalize=True)
@@ -188,7 +188,7 @@ class MetaEstimator():
 
         return self.predictions
 
-    def get_residuals(self, x_train, x_test, y_train, y_test, baseline = False):
+    def get_resid(self, x_train, x_test, y_train, y_test, baseline = False):
         '''Returns the residuals for the prediction. To avoid excess code, this is
         called directly on the unfitted estimator'''
 

@@ -37,4 +37,3 @@ elif which == 'glass':
         X = np.loadtxt(f, delimiter=",", skiprows = 1)
 
 find_neighbours(X, confidence = 0.1)
-

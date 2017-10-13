@@ -307,13 +307,13 @@ def PCIT(y, x, z = None, estimator = MetaEstimator(), parametric = False, confid
 
             # Baseline, distinction between marginal and conditional case
             if z is None:
-                base_loss = estimator_base.get_residuals(x_tn, x_ts, y_tn[:, i],y_ts[:, i], baseline = True)
+                base_loss = estimator_base.get_resid(x_tn, x_ts, y_tn[:, i],y_ts[:, i], baseline = True)
 
             else:
-                base_loss = estimator_base.get_residuals(z_tn, z_ts, y_tn[:,i], y_ts[:,i])
+                base_loss = estimator_base.get_resid(z_tn, z_ts, y_tn[:,i], y_ts[:,i])
 
             # Loss residuals of prediction including x
-            loss = estimator_cont.get_residuals(x_tn, x_ts, y_tn[:,i], y_ts[:,i])
+            loss = estimator_cont.get_resid(x_tn, x_ts, y_tn[:,i], y_ts[:,i])
 
             # p-value of one side test of baseline against prediction including info about x
             p_values[i], conf_int[i] = get_loss_statistics(loss, base_loss, parametric, confidence)
