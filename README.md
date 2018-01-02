@@ -3,12 +3,12 @@
 
 ## Description
 
-This package implements a multivariate conditional independence independence test and an algorithm for learning directed graphs from data based on the PCIT
+This package implements a multivariate conditional independence test and an algorithm for learning directed graphs from data based on the PCIT
 
-[MSc Thesis](https://github.com/SamBurkart/pcit/blob/master/MSc_Project.pdf)
+[arXiv preprint](https://arxiv.org/abs/1711.05869)
 
 ## Code Example
-##### For details, see the [Manual](https://samburkart.github.io/pcit-manual/) or [Examples](https://github.com/SamBurkart/pcit/blob/master/Example.ipynb)
+##### For details, see the [Examples](https://github.com/SamBurkart/pcit/blob/master/Example.ipynb)
 
 There are 3 main functions:
 - [MetaEstimator](https://github.com/SamBurkart/pcit/blob/master/pcit/MetaEstimator.py): Estimator class used for independence testing
