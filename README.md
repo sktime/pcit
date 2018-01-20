@@ -9,9 +9,8 @@ This package implements a multivariate conditional independence test and an algo
 
 ## Developers
 
-[Samuel Burkart](https://github.com/SamBurkart): designated point of contact
-
-[Franz Kiraly](https://github.com/fkiraly)
+* [Samuel Burkart](https://github.com/SamBurkart): designated point of contact
+* [Franz Kiraly](https://github.com/fkiraly)
 
 If you like to contribute, read our [contribution guide](https://github.com/alan-turing-institute/pcit/blob/master/contributing.md).
 
