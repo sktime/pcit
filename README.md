@@ -15,7 +15,7 @@ This package implements a multivariate conditional independence test and an algo
 If you like to contribute, read our [contribution guide](https://github.com/alan-turing-institute/pcit/blob/master/contributing.md).
 
 ## Code Example
-##### For details, see the [Examples](https://github.com/SamBurkart/pcit/blob/master/Example.ipynb)
+##### For details, see the [Examples](https://github.com/SamBurkart/pcit/blob/master/Example.ipynb) or the [Manual](https://samburkart.github.io/pcit-manual/)
 
 There are 3 main functions:
 - [MetaEstimator](https://github.com/SamBurkart/pcit/blob/master/pcit/MetaEstimator.py): Estimator class used for independence testing
