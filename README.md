@@ -89,11 +89,11 @@ The dependencies are:
 ## Tests
 Three tests can be run:
 
-[Test_PCIT_Power](https://github.com/alan-turing-institute/pcit/blob/master/Tests/Test_PCIT_Power.py): Tests the power for increasing sample sizes on a difficult v-structured problem. Matlab code for same problem to compare with the "Kernel Conditional Independence Test" can be found [here](https://github.com/alan-turing-institute/pcit/blob/master/further/Test_KCIT_Power.m)
+[Test_PCIT_Power](https://github.com/alan-turing-institute/pcit/blob/master/tests/Test_PCIT_Power.py): Tests the power for increasing sample sizes on a difficult v-structured problem. Matlab code for same problem to compare with the "Kernel Conditional Independence Test" can be found [here](https://github.com/alan-turing-institute/pcit/blob/master/further/Test_KCIT_Power.m)
 
-[Test_PCIT_Consistency](https://github.com/alan-turing-institute/pcit/blob/master/Tests/Test_PCIT_Consistency.py): Here the consistency under perturbations in the data is assessed.
+[Test_PCIT_Consistency](https://github.com/alan-turing-institute/pcit/blob/master/tests/Test_PCIT_Consistency.py): Here the consistency under perturbations in the data is assessed.
 
-[Test_Structure](https://github.com/alan-turing-institute/pcit/blob/master/Tests/Test_Structure.py): Here the power and false-discovery rate control of the graphical model structure learning algorithm are assessed
+[Test_Structure](https://github.com/alan-turing-institute/pcit/blob/master/tests/Test_Structure.py): Here the power and false-discovery rate control of the graphical model structure learning algorithm are assessed
 
 ## License
 
