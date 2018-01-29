@@ -15,12 +15,12 @@ This package implements a multivariate conditional independence test and an algo
 If you like to contribute, read our [contribution guide](https://github.com/alan-turing-institute/pcit/blob/master/contributing.md).
 
 ## Code Example
-##### For details, see the [Examples](https://github.com/SamBurkart/pcit/blob/master/Example.ipynb) or the [Manual](https://samburkart.github.io/pcit-manual/)
+##### For details, see the [Examples](https://github.com/alan-turing-institute/pcit/blob/master/Example.ipynb) or the [Manual](https://samburkart.github.io/pcit-manual/)
 
 There are 3 main functions:
-- [MetaEstimator](https://github.com/SamBurkart/pcit/blob/master/pcit/MetaEstimator.py): Estimator class used for independence testing
-- [PCIT](https://github.com/SamBurkart/pcit/blob/master/pcit/IndependenceTest.py): Multivariate Conditional Independence Test
-- [find_neighbours](https://github.com/SamBurkart/pcit/blob/master/pcit/StructureEstimation.py): Undirected graph skeleton learning algorithm
+- [MetaEstimator](https://github.com/alan-turing-institute/pcit/blob/master/pcit/MetaEstimator.py): Estimator class used for independence testing
+- [PCIT](https://github.com/alan-turing-institute/pcit/blob/master/pcit/IndependenceTest.py): Multivariate Conditional Independence Test
+- [find_neighbours](https://github.com/alan-turing-institute/pcit/blob/master/pcit/StructureEstimation.py): Undirected graph skeleton learning algorithm
 
 
 For the following, X, Y and Z can be univariate or multivariate
@@ -89,11 +89,11 @@ The dependencies are:
 ## Tests
 Three tests can be run:
 
-[Test_PCIT_Power](https://github.com/SamBurkart/pcit/blob/master/Tests/Test_PCIT_Power.py): Tests the power for increasing sample sizes on a difficult v-structured problem. Matlab code for same problem to compare with the "Kernel Conditional Independence Test" can be found [here](https://github.com/SamBurkart/pcit/blob/master/further/Test_KCIT_Power.m)
+[Test_PCIT_Power](https://github.com/alan-turing-institute/pcit/blob/master/Tests/Test_PCIT_Power.py): Tests the power for increasing sample sizes on a difficult v-structured problem. Matlab code for same problem to compare with the "Kernel Conditional Independence Test" can be found [here](https://github.com/alan-turing-institute/pcit/blob/master/further/Test_KCIT_Power.m)
 
-[Test_PCIT_Consistency](https://github.com/SamBurkart/pcit/blob/master/Tests/Test_PCIT_Consistency.py): Here the consistency under perturbations in the data is assessed.
+[Test_PCIT_Consistency](https://github.com/alan-turing-institute/pcit/blob/master/Tests/Test_PCIT_Consistency.py): Here the consistency under perturbations in the data is assessed.
 
-[Test_Structure](https://github.com/SamBurkart/pcit/blob/master/Tests/Test_Structure.py): Here the power and false-discovery rate control of the graphical model structure learning algorithm are assessed
+[Test_Structure](https://github.com/alan-turing-institute/pcit/blob/master/Tests/Test_Structure.py): Here the power and false-discovery rate control of the graphical model structure learning algorithm are assessed
 
 ## License
 
