@@ -1,6 +1,8 @@
 # Predictive Conditional Independence Testing (PCIT)
 ## with applications in graphical model structure learning
 
+## Currently under review! See [issues](https://github.com/alan-turing-institute/pcit/issues)
+
 ## Description
 
 This package implements a multivariate conditional independence test and an algorithm for learning directed graphs from data based on the PCIT
